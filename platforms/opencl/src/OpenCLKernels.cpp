@@ -7464,7 +7464,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                 else if (defines.find("LOAD_POS_AS_DELTA") != defines.end())
                     defines.erase("LOAD_POS_AS_DELTA");
                 cl::Program program = cl.createProgram(cl.replaceStrings(OpenCLKernelSources::customIntegratorPerDof, replacements), defines);
-                cout << endl << program.getInfoString(CL_PROGRAM_SOURCE) << endl; // DEBUG JDC
+                cout << "customIntegratorPerDof:" << endl << program.getInfoString(CL_PROGRAM_SOURCE) << endl; // DEBUG JDC
                 cl::Kernel kernel = cl::Kernel(program, "computePerDof");
                 kernels[step].push_back(kernel);
                 requiredGaussian[step] = numGaussian;
@@ -7498,6 +7498,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                 // Apply position constraints.
 
                 cl::Program program = cl.createProgram(OpenCLKernelSources::customIntegrator, defines);
+                cout << "customIntegrator:" << endl << program.getInfoString(CL_PROGRAM_SOURCE) << endl; // DEBUG JDC
                 cl::Kernel kernel = cl::Kernel(program, "applyPositionDeltas");
                 kernels[step].push_back(kernel);
                 int index = 0;
@@ -7557,6 +7558,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
         if (defines.find("LOAD_POS_AS_DELTA") != defines.end())
             defines.erase("LOAD_POS_AS_DELTA");
         cl::Program program = cl.createProgram(cl.replaceStrings(OpenCLKernelSources::customIntegratorPerDof, replacements), defines);
+        cout << "customIntegratorPerDof:" << endl << program.getInfoString(CL_PROGRAM_SOURCE) << endl; // DEBUG JDC
         kineticEnergyKernel = cl::Kernel(program, "computePerDof");
         int index = 0;
         kineticEnergyKernel.setArg<cl::Buffer>(index++, cl.getPosq().getDeviceBuffer());
