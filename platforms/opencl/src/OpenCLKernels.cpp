@@ -177,7 +177,7 @@ public:
     }
     void execute(ThreadPool& threads, int threadIndex) {
         // Compute the position of each particle to return to the user.  This is done in parallel for speed.
-        
+
         const vector<int>& order = cl.getAtomIndex();
         int numParticles = cl.getNumAtoms();
         Vec3 boxVectors[3];
@@ -234,9 +234,9 @@ void OpenCLUpdateStateDataKernel::getPositions(ContextImpl& context, vector<Vec3
         mm_float4* posq = (mm_float4*) cl.getPinnedBuffer();
         cl.getPosq().download(posq);
     }
-    
+
     // Filling in the output array is done in parallel for speed.
-    
+
     GetPositionsTask task(cl, positions, posCorrection);
     cl.getPlatformData().threads.execute(task);
     cl.getPlatformData().threads.waitForThreads();
@@ -416,7 +416,7 @@ void OpenCLUpdateStateDataKernel::setPeriodicBoxVectors(ContextImpl& context, co
             break;
         }
     }
-    
+
     // Update the vectors.
 
     for (int i = 0; i < (int) contexts.size(); i++)
@@ -596,9 +596,9 @@ void OpenCLCalcHarmonicBondForceKernel::copyParametersToContext(ContextImpl& con
         throw OpenMMException("updateParametersInContext: The number of bonds has changed");
     if (numBonds == 0)
         return;
-    
+
     // Record the per-bond parameters.
-    
+
     vector<mm_float2> paramVector(numBonds);
     for (int i = 0; i < numBonds; i++) {
         int atom1, atom2;
@@ -607,9 +607,9 @@ void OpenCLCalcHarmonicBondForceKernel::copyParametersToContext(ContextImpl& con
         paramVector[i] = mm_float2((cl_float) length, (cl_float) k);
     }
     params->upload(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -745,9 +745,9 @@ void OpenCLCalcCustomBondForceKernel::copyParametersToContext(ContextImpl& conte
         throw OpenMMException("updateParametersInContext: The number of bonds has changed");
     if (numBonds == 0)
         return;
-    
+
     // Record the per-bond parameters.
-    
+
     vector<vector<cl_float> > paramVector(numBonds);
     vector<double> parameters;
     for (int i = 0; i < numBonds; i++) {
@@ -758,9 +758,9 @@ void OpenCLCalcCustomBondForceKernel::copyParametersToContext(ContextImpl& conte
             paramVector[i][j] = (cl_float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -833,9 +833,9 @@ void OpenCLCalcHarmonicAngleForceKernel::copyParametersToContext(ContextImpl& co
         throw OpenMMException("updateParametersInContext: The number of angles has changed");
     if (numAngles == 0)
         return;
-    
+
     // Record the per-angle parameters.
-    
+
     vector<mm_float2> paramVector(numAngles);
     for (int i = 0; i < numAngles; i++) {
         int atom1, atom2, atom3;
@@ -844,9 +844,9 @@ void OpenCLCalcHarmonicAngleForceKernel::copyParametersToContext(ContextImpl& co
         paramVector[i] = mm_float2((cl_float) angle, (cl_float) k);
     }
     params->upload(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -983,9 +983,9 @@ void OpenCLCalcCustomAngleForceKernel::copyParametersToContext(ContextImpl& cont
         throw OpenMMException("updateParametersInContext: The number of angles has changed");
     if (numAngles == 0)
         return;
-    
+
     // Record the per-angle parameters.
-    
+
     vector<vector<cl_float> > paramVector(numAngles);
     vector<double> parameters;
     for (int i = 0; i < numAngles; i++) {
@@ -996,9 +996,9 @@ void OpenCLCalcCustomAngleForceKernel::copyParametersToContext(ContextImpl& cont
             paramVector[i][j] = (cl_float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -1072,9 +1072,9 @@ void OpenCLCalcPeriodicTorsionForceKernel::copyParametersToContext(ContextImpl& 
         throw OpenMMException("updateParametersInContext: The number of torsions has changed");
     if (numTorsions == 0)
         return;
-    
+
     // Record the per-torsion parameters.
-    
+
     vector<mm_float4> paramVector(numTorsions);
     for (int i = 0; i < numTorsions; i++) {
         int atom1, atom2, atom3, atom4, periodicity;
@@ -1083,9 +1083,9 @@ void OpenCLCalcPeriodicTorsionForceKernel::copyParametersToContext(ContextImpl& 
         paramVector[i] = mm_float4((cl_float) k, (cl_float) phase, (cl_float) periodicity, 0.0f);
     }
     params->upload(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -1159,9 +1159,9 @@ void OpenCLCalcRBTorsionForceKernel::copyParametersToContext(ContextImpl& contex
         throw OpenMMException("updateParametersInContext: The number of torsions has changed");
     if (numTorsions == 0)
         return;
-    
+
     // Record the per-torsion parameters.
-    
+
     vector<mm_float8> paramVector(numTorsions);
     for (int i = 0; i < numTorsions; i++) {
         int atom1, atom2, atom3, atom4;
@@ -1170,9 +1170,9 @@ void OpenCLCalcRBTorsionForceKernel::copyParametersToContext(ContextImpl& contex
         paramVector[i] = mm_float8((cl_float) c0, (cl_float) c1, (cl_float) c2, (cl_float) c3, (cl_float) c4, (cl_float) c5, 0.0f, 0.0f);
     }
     params->upload(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -1441,9 +1441,9 @@ void OpenCLCalcCustomTorsionForceKernel::copyParametersToContext(ContextImpl& co
         throw OpenMMException("updateParametersInContext: The number of torsions has changed");
     if (numTorsions == 0)
         return;
-    
+
     // Record the per-torsion parameters.
-    
+
     vector<vector<cl_float> > paramVector(numTorsions);
     vector<double> parameters;
     for (int i = 0; i < numTorsions; i++) {
@@ -1454,9 +1454,9 @@ void OpenCLCalcCustomTorsionForceKernel::copyParametersToContext(ContextImpl& co
             paramVector[i][j] = (cl_float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -1688,9 +1688,9 @@ void OpenCLCalcNonbondedForceKernel::initialize(const System& system, const Nonb
         double reactionFieldC = (1.0 / force.getCutoffDistance())*(3.0*force.getReactionFieldDielectric())/(2.0*force.getReactionFieldDielectric()+1.0);
         defines["REACTION_FIELD_K"] = cl.doubleToString(reactionFieldK);
         defines["REACTION_FIELD_C"] = cl.doubleToString(reactionFieldC);
-        
+
         // Compute the switching coefficients.
-        
+
         if (force.getUseSwitchingFunction()) {
             defines["LJ_SWITCH_CUTOFF"] = cl.doubleToString(force.getSwitchingDistance());
             defines["LJ_SWITCH_C3"] = cl.doubleToString(10/pow(force.getSwitchingDistance()-force.getCutoffDistance(), 3.0));
@@ -1882,7 +1882,7 @@ void OpenCLCalcNonbondedForceKernel::initialize(const System& system, const Nonb
     }
 
     // Add the interaction to the default nonbonded kernel.
-    
+
     string source = cl.replaceStrings(OpenCLKernelSources::coulombLennardJones, defines);
     cl.getNonbondedUtilities().addInteraction(useCutoff, usePeriodic, true, force.getCutoffDistance(), exclusionList, source, force.getForceGroup());
     if (hasLJ)
@@ -1996,9 +1996,9 @@ double OpenCLCalcNonbondedForceKernel::execute(ContextImpl& context, bool includ
     if (pmeGrid != NULL && includeReciprocal) {
         if (usePmeQueue && !includeEnergy)
             cl.setQueue(pmeQueue);
-        
+
         // Invert the periodic box vectors.
-        
+
         Vec3 boxVectors[3];
         cl.getPeriodicBoxVectors(boxVectors[0], boxVectors[1], boxVectors[2]);
         double determinant = boxVectors[0][0]*boxVectors[1][1]*boxVectors[2][2];
@@ -2010,7 +2010,7 @@ double OpenCLCalcNonbondedForceKernel::execute(ContextImpl& context, bool includ
         mm_float4 recipBoxVectorsFloat[3];
         for (int i = 0; i < 3; i++)
             recipBoxVectorsFloat[i] = mm_float4((float) recipBoxVectors[i].x, (float) recipBoxVectors[i].y, (float) recipBoxVectors[i].z, 0);
-        
+
         // Execute the reciprocal space kernels.
 
         setPeriodicBoxArgs(cl, pmeUpdateBsplinesKernel, 4);
@@ -2119,7 +2119,7 @@ double OpenCLCalcNonbondedForceKernel::execute(ContextImpl& context, bool includ
 
 void OpenCLCalcNonbondedForceKernel::copyParametersToContext(ContextImpl& context, const NonbondedForce& force) {
     // Make sure the new parameters are acceptable.
-    
+
     if (force.getNumParticles() != cl.getNumAtoms())
         throw OpenMMException("updateParametersInContext: The number of particles has changed");
     if (!hasCoulomb || !hasLJ) {
@@ -2146,9 +2146,9 @@ void OpenCLCalcNonbondedForceKernel::copyParametersToContext(ContextImpl& contex
     int startIndex = cl.getContextIndex()*exceptions.size()/numContexts;
     int endIndex = (cl.getContextIndex()+1)*exceptions.size()/numContexts;
     int numExceptions = endIndex-startIndex;
-    
+
     // Record the per-particle parameters.
-    
+
     OpenCLArray& posq = cl.getPosq();
     posq.download(cl.getPinnedBuffer());
     mm_float4* posqf = (mm_float4*) cl.getPinnedBuffer();
@@ -2169,9 +2169,9 @@ void OpenCLCalcNonbondedForceKernel::copyParametersToContext(ContextImpl& contex
     }
     posq.upload(cl.getPinnedBuffer());
     sigmaEpsilon->upload(sigmaEpsilonVector);
-    
+
     // Record the exceptions.
-    
+
     if (numExceptions > 0) {
         vector<vector<int> > atoms(numExceptions, vector<int>(2));
         vector<mm_float4> exceptionParamsVector(numExceptions);
@@ -2182,9 +2182,9 @@ void OpenCLCalcNonbondedForceKernel::copyParametersToContext(ContextImpl& contex
         }
         exceptionParams->upload(exceptionParamsVector);
     }
-    
+
     // Compute other values.
-    
+
     if (nonbondedMethod == Ewald || nonbondedMethod == PME)
         ewaldSelfEnergy = (cl.getContextIndex() == 0 ? -ONE_4PI_EPS0*alpha*sumSquaredCharges/sqrt(M_PI) : 0.0);
     if (force.getUseDispersionCorrection() && cl.getContextIndex() == 0 && (nonbondedMethod == CutoffPeriodic || nonbondedMethod == Ewald || nonbondedMethod == PME))
@@ -2364,7 +2364,7 @@ void OpenCLCalcCustomNonbondedForceKernel::initialize(const System& system, cons
     replacements["USE_SWITCH"] = (useCutoff && force.getUseSwitchingFunction() ? "1" : "0");
     if (force.getUseSwitchingFunction()) {
         // Compute the switching coefficients.
-        
+
         replacements["SWITCH_CUTOFF"] = cl.doubleToString(force.getSwitchingDistance());
         replacements["SWITCH_C3"] = cl.doubleToString(10/pow(force.getSwitchingDistance()-force.getCutoffDistance(), 3.0));
         replacements["SWITCH_C4"] = cl.doubleToString(15/pow(force.getSwitchingDistance()-force.getCutoffDistance(), 4.0));
@@ -2385,9 +2385,9 @@ void OpenCLCalcCustomNonbondedForceKernel::initialize(const System& system, cons
         }
     }
     cl.addForce(new OpenCLCustomNonbondedForceInfo(cl.getNonbondedUtilities().getNumForceBuffers(), force));
-    
+
     // Record information for the long range correction.
-    
+
     if (force.getNonbondedMethod() == CustomNonbondedForce::CutoffPeriodic && force.getUseLongRangeCorrection() && cl.getContextIndex() == 0) {
         forceCopy = new CustomNonbondedForce(force);
         hasInitializedLongRangeCorrection = false;
@@ -2400,13 +2400,13 @@ void OpenCLCalcCustomNonbondedForceKernel::initialize(const System& system, cons
 
 void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNonbondedForce& force, const string& interactionSource, const vector<string>& tableTypes) {
     // Process groups to form tiles.
-    
+
     vector<vector<int> > atomLists;
     vector<pair<int, int> > tiles;
     map<pair<int, int>, int> duplicateInteractions;
     for (int group = 0; group < force.getNumInteractionGroups(); group++) {
         // Get the list of atoms in this group and sort them.
-        
+
         set<int> set1, set2;
         force.getInteractionGroupParameters(group, set1, set2);
         vector<int> atoms1, atoms2;
@@ -2414,23 +2414,23 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
         atoms2.insert(atoms2.begin(), set2.begin(), set2.end());
         sort(atoms1.begin(), atoms1.end());
         sort(atoms2.begin(), atoms2.end());
-        
+
         // Find how many tiles we will create for this group.
-        
+
         int tileWidth = min(min(32, (int) atoms1.size()), (int) atoms2.size());
         if (tileWidth == 0)
             continue;
         int numBlocks1 = (atoms1.size()+tileWidth-1)/tileWidth;
         int numBlocks2 = (atoms2.size()+tileWidth-1)/tileWidth;
-        
+
         // Add the tiles.
-        
+
         for (int i = 0; i < numBlocks1; i++)
             for (int j = 0; j < numBlocks2; j++)
                 tiles.push_back(make_pair(atomLists.size()+i, atomLists.size()+numBlocks1+j));
-        
+
         // Add the atom lists.
-        
+
         for (int i = 0; i < numBlocks1; i++) {
             vector<int> atoms;
             int first = i*tileWidth;
@@ -2447,9 +2447,9 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
                 atoms.push_back(atoms2[j]);
             atomLists.push_back(atoms);
         }
-        
+
         // If this group contains duplicate interactions, record that we need to skip them once.
-        
+
         for (int i = 0; i < (int) atoms1.size(); i++) {
             int a1 = atoms1[i];
             if (set2.find(a1) == set2.end())
@@ -2465,16 +2465,16 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
             }
         }
     }
-    
+
     // Build a lookup table for quickly identifying excluded interactions.
-    
+
     set<pair<int, int> > exclusions;
     for (int i = 0; i < force.getNumExclusions(); i++) {
         int p1, p2;
         force.getExclusionParticles(i, p1, p2);
         exclusions.insert(make_pair(min(p1, p2), max(p1, p2)));
     }
-    
+
     // Build the exclusion flags for each tile.  While we're at it, filter out tiles
     // where all interactions are excluded, and sort the tiles by size.
 
@@ -2483,7 +2483,7 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
     for (int tile = 0; tile < tiles.size(); tile++) {
         if (atomLists[tiles[tile].first].size() < atomLists[tiles[tile].second].size()) {
             // For efficiency, we want the first axis to be the larger one.
-            
+
             int swap = tiles[tile].first;
             tiles[tile].first = tiles[tile].second;
             tiles[tile].second = swap;
@@ -2502,7 +2502,7 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
                     isExcluded = true; // This is an excluded interaction.
                 else if (duplicateInteractions.find(key) != duplicateInteractions.end() && duplicateInteractions[key] > 0) {
                     // Both atoms are in both sets, so skip duplicate interactions.
-                    
+
                     isExcluded = true;
                     duplicateInteractions[key]--;
                 }
@@ -2517,9 +2517,9 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
         exclusionFlags[tile] = flags;
     }
     sort(tileOrder.begin(), tileOrder.end());
-    
+
     // Merge tiles to get as close as possible to 32 along the first axis of each one.
-    
+
     vector<int> tileSetStart;
     tileSetStart.push_back(0);
     int tileSetSize = 0;
@@ -2533,9 +2533,9 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
         tileSetSize += size;
     }
     tileSetStart.push_back(tileOrder.size());
-    
+
     // Build the data structures.
-    
+
     int numTileSets = tileSetStart.size()-1;
     vector<mm_int4> groupData;
     for (int tileSet = 0; tileSet < numTileSets; tileSet++) {
@@ -2544,7 +2544,7 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
         if (cl.getSIMDWidth() < 32) {
             // We need to include a barrier inside the inner loop, so ensure that all
             // threads will loop the same number of times.
-            
+
             for (int i = tileSetStart[tileSet]; i < tileSetStart[tileSet+1]; i++)
                 minSize = max(minSize, (int) atomLists[tiles[tileOrder[i].second].first].size());
         }
@@ -2567,15 +2567,15 @@ void OpenCLCalcCustomNonbondedForceKernel::initInteractionGroups(const CustomNon
     }
     interactionGroupData = OpenCLArray::create<mm_int4>(cl, groupData.size(), "interactionGroupData");
     interactionGroupData->upload(groupData);
-    
+
     // Create the kernel.
-    
+
     map<string, string> replacements;
     replacements["COMPUTE_INTERACTION"] = interactionSource;
     const string suffixes[] = {"x", "y", "z", "w"};
     stringstream localData;
     int localDataSize = 0;
-    vector<OpenCLNonbondedUtilities::ParameterInfo>& buffers = params->getBuffers(); 
+    vector<OpenCLNonbondedUtilities::ParameterInfo>& buffers = params->getBuffers();
     for (int i = 0; i < (int) buffers.size(); i++) {
         if (buffers[i].getNumComponents() == 1)
             localData<<buffers[i].getComponentType()<<" params"<<(i+1)<<";\n";
@@ -2700,9 +2700,9 @@ void OpenCLCalcCustomNonbondedForceKernel::copyParametersToContext(ContextImpl& 
     int numParticles = force.getNumParticles();
     if (numParticles != cl.getNumAtoms())
         throw OpenMMException("updateParametersInContext: The number of particles has changed");
-    
+
     // Record the per-particle parameters.
-    
+
     vector<vector<cl_float> > paramVector(numParticles);
     vector<double> parameters;
     for (int i = 0; i < numParticles; i++) {
@@ -2712,17 +2712,17 @@ void OpenCLCalcCustomNonbondedForceKernel::copyParametersToContext(ContextImpl& 
             paramVector[i][j] = (cl_float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // If necessary, recompute the long range correction.
-    
+
     if (forceCopy != NULL) {
         CustomNonbondedForceImpl::calcLongRangeCorrection(force, context.getOwner(), longRangeCoefficient, longRangeCoefficientDerivs);
         hasInitializedLongRangeCorrection = true;
         *forceCopy = force;
     }
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -2931,13 +2931,13 @@ double OpenCLCalcGBSAOBCForceKernel::execute(ContextImpl& context, bool includeF
 
 void OpenCLCalcGBSAOBCForceKernel::copyParametersToContext(ContextImpl& context, const GBSAOBCForce& force) {
     // Make sure the new parameters are acceptable.
-    
+
     int numParticles = force.getNumParticles();
     if (numParticles != cl.getNumAtoms())
         throw OpenMMException("updateParametersInContext: The number of particles has changed");
-    
+
     // Record the per-particle parameters.
-    
+
     OpenCLArray& posq = cl.getPosq();
     mm_float4* posqf = (mm_float4*) cl.getPinnedBuffer();
     mm_double4* posqd = (mm_double4*) cl.getPinnedBuffer();
@@ -2956,9 +2956,9 @@ void OpenCLCalcGBSAOBCForceKernel::copyParametersToContext(ContextImpl& context,
     }
     posq.upload(cl.getPinnedBuffer());
     params->upload(paramsVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -3579,9 +3579,9 @@ void OpenCLCalcCustomGBForceKernel::initialize(const System& system, const Custo
                         saveParamDerivs << "energyParamDerivs[get_global_id(0)*" << numDerivs << "+" << index << "] += energyParamDeriv" << i << ";\n";
             }
         }
-        
+
         // Compute the various expressions.
-        
+
         map<string, string> variables;
         variables["x"] = "pos.x";
         variables["y"] = "pos.y";
@@ -3619,9 +3619,9 @@ void OpenCLCalcCustomGBForceKernel::initialize(const System& system, const Custo
             for (int j = 0; j < i; j++)
                 expressions["real dV"+cl.intToString(i)+"dV"+cl.intToString(j)+" = "] = valueDerivExpressions[i][j];
         compute << cl.getExpressionUtilities().createExpressions(expressions, variables, functionList, functionDefinitions, "temp");
-        
+
         // Record values.
-        
+
         for (int i = 0; i < (int) energyDerivs->getBuffers().size(); i++) {
             string index = cl.intToString(i+1);
             compute << "derivBuffers" << index << "[index] = deriv" << index << ";\n";
@@ -3796,7 +3796,7 @@ void OpenCLCalcCustomGBForceKernel::initialize(const System& system, const Custo
                 parameters.push_back(OpenCLNonbondedUtilities::ParameterInfo(paramName, buffer.getComponentType(), buffer.getNumComponents(), buffer.getSize(), buffer.getMemory()));
         }
         for (int i = 0; i < (int) energyDerivChain->getBuffers().size(); i++) {
-            if (needChainForValue[i]) { 
+            if (needChainForValue[i]) {
                 const OpenCLNonbondedUtilities::ParameterInfo& buffer = energyDerivChain->getBuffers()[i];
                 string paramName = prefix+"dEdV"+cl.intToString(i+1);
                 parameters.push_back(OpenCLNonbondedUtilities::ParameterInfo(paramName, buffer.getComponentType(), buffer.getNumComponents(), buffer.getSize(), buffer.getMemory()));
@@ -3829,7 +3829,7 @@ double OpenCLCalcCustomGBForceKernel::execute(ContextImpl& context, bool include
     int elementSize = (cl.getUseDoublePrecision() ? sizeof(cl_double) : sizeof(cl_float));
     if (!hasInitializedKernels) {
         hasInitializedKernels = true;
-        
+
         // These two kernels can't be compiled in initialize(), because the nonbonded utilities object
         // has not yet been initialized then.
 
@@ -3863,7 +3863,7 @@ double OpenCLCalcCustomGBForceKernel::execute(ContextImpl& context, bool include
         }
 
         // Set arguments for kernels.
-        
+
         maxTiles = (nb.getUseCutoff() ? nb.getInteractingTiles().getSize() : 0);
         bool useLong = cl.getSupports64BitGlobalAtomics();
         if (useLong) {
@@ -4059,9 +4059,9 @@ void OpenCLCalcCustomGBForceKernel::copyParametersToContext(ContextImpl& context
     int numParticles = force.getNumParticles();
     if (numParticles != cl.getNumAtoms())
         throw OpenMMException("updateParametersInContext: The number of particles has changed");
-    
+
     // Record the per-particle parameters.
-    
+
     vector<vector<cl_float> > paramVector(cl.getPaddedNumAtoms(), vector<cl_float>(force.getNumPerParticleParameters(), 0));
     vector<double> parameters;
     for (int i = 0; i < numParticles; i++) {
@@ -4070,9 +4070,9 @@ void OpenCLCalcCustomGBForceKernel::copyParametersToContext(ContextImpl& context
             paramVector[i][j] = (cl_float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -4212,9 +4212,9 @@ void OpenCLCalcCustomExternalForceKernel::copyParametersToContext(ContextImpl& c
         throw OpenMMException("updateParametersInContext: The number of particles has changed");
     if (numParticles == 0)
         return;
-    
+
     // Record the per-particle parameters.
-    
+
     vector<vector<cl_float> > paramVector(numParticles);
     vector<double> parameters;
     for (int i = 0; i < numParticles; i++) {
@@ -4225,9 +4225,9 @@ void OpenCLCalcCustomExternalForceKernel::copyParametersToContext(ContextImpl& c
             paramVector[i][j] = (cl_float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -4734,9 +4734,9 @@ void OpenCLCalcCustomHbondForceKernel::copyParametersToContext(ContextImpl& cont
         throw OpenMMException("updateParametersInContext: The number of donors has changed");
     if (numAcceptors != force.getNumAcceptors())
         throw OpenMMException("updateParametersInContext: The number of acceptors has changed");
-    
+
     // Record the per-donor parameters.
-    
+
     if (numDonors > 0) {
         vector<vector<cl_float> > donorParamVector(numDonors);
         vector<double> parameters;
@@ -4749,9 +4749,9 @@ void OpenCLCalcCustomHbondForceKernel::copyParametersToContext(ContextImpl& cont
         }
         donorParams->setParameterValues(donorParamVector);
     }
-    
+
     // Record the per-acceptor parameters.
-    
+
     if (numAcceptors > 0) {
         vector<vector<cl_float> > acceptorParamVector(numAcceptors);
         vector<double> parameters;
@@ -4764,9 +4764,9 @@ void OpenCLCalcCustomHbondForceKernel::copyParametersToContext(ContextImpl& cont
         }
         acceptorParams->setParameterValues(acceptorParamVector);
     }
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -4841,9 +4841,9 @@ void OpenCLCalcCustomCentroidBondForceKernel::initialize(const System& system, c
     if (!cl.getSupports64BitGlobalAtomics())
         throw OpenMMException("CustomCentroidBondForce requires a device that supports 64 bit atomic operations");
     cl.addForce(new OpenCLCustomCentroidBondForceInfo(force));
-    
+
     // Record the groups.
-    
+
     numGroups = force.getNumGroups();
     vector<cl_int> groupParticleVec;
     vector<cl_float> groupWeightVecFloat;
@@ -4884,9 +4884,9 @@ void OpenCLCalcCustomCentroidBondForceKernel::initialize(const System& system, c
     groupOffsets->upload(groupOffsetVec);
     groupForces = OpenCLArray::create<long long>(cl, numGroups*3, "groupForces");
     cl.addAutoclearBuffer(*groupForces);
-    
+
     // Record the bonds.
-    
+
     int groupsPerBond = force.getNumGroupsPerBond();
     vector<cl_int> bondGroupVec(numBonds*groupsPerBond);
     params = new OpenCLParameterSet(cl, force.getNumPerBondParameters(), numBonds, "customCentroidBondParams");
@@ -4926,7 +4926,7 @@ void OpenCLCalcCustomCentroidBondForceKernel::initialize(const System& system, c
             extraArgs << width;
         extraArgs << "* restrict " << arrayName;
     }
-    
+
     // Record information about parameters.
 
     globalParamNames.resize(force.getNumGlobalParameters());
@@ -5135,9 +5135,9 @@ void OpenCLCalcCustomCentroidBondForceKernel::initialize(const System& system, c
         compute<<forceNames[groups[3]]<<".xyz += internalF3.xyz;\n";
         compute<<"}\n";
     }
-    
+
     // Save the forces to global memory.
-    
+
     for (int i = 0; i < groupsPerBond; i++) {
         compute<<"atom_add(&groupForce[group"<<(i+1)<<"], (long) (force"<<(i+1)<<".x*0x100000000));\n";
         compute<<"atom_add(&groupForce[group"<<(i+1)<<"+NUM_GROUPS], (long) (force"<<(i+1)<<".y*0x100000000));\n";
@@ -5213,9 +5213,9 @@ void OpenCLCalcCustomCentroidBondForceKernel::copyParametersToContext(ContextImp
         throw OpenMMException("updateParametersInContext: The number of bonds has changed");
     if (numBonds == 0)
         return;
-    
+
     // Record the per-bond parameters.
-    
+
     vector<vector<float> > paramVector(numBonds);
     vector<int> particles;
     vector<double> parameters;
@@ -5226,9 +5226,9 @@ void OpenCLCalcCustomCentroidBondForceKernel::copyParametersToContext(ContextImp
             paramVector[i][j] = (float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -5305,7 +5305,7 @@ void OpenCLCalcCustomCompoundBondForceKernel::initialize(const System& system, c
         string arrayName = cl.getBondedUtilities().addArgument(array->getDeviceBuffer(), width == 1 ? "float" : "float"+cl.intToString(width));
         functionDefinitions.push_back(make_pair(name, arrayName));
     }
-    
+
     // Record information about parameters.
 
     globalParamNames.resize(force.getNumGlobalParameters());
@@ -5527,9 +5527,9 @@ void OpenCLCalcCustomCompoundBondForceKernel::copyParametersToContext(ContextImp
         throw OpenMMException("updateParametersInContext: The number of bonds has changed");
     if (numBonds == 0)
         return;
-    
+
     // Record the per-bond parameters.
-    
+
     vector<vector<cl_float> > paramVector(numBonds);
     vector<int> particles;
     vector<double> parameters;
@@ -5540,9 +5540,9 @@ void OpenCLCalcCustomCompoundBondForceKernel::copyParametersToContext(ContextImp
             paramVector[i][j] = (cl_float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -5621,9 +5621,9 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
     nonbondedMethod = CalcCustomManyParticleForceKernel::NonbondedMethod(force.getNonbondedMethod());
     forceWorkgroupSize = 128;
     findNeighborsWorkgroupSize = (cl.getSIMDWidth() >= 32 ? 128 : 32);
-    
+
     // Record parameter values.
-    
+
     params = new OpenCLParameterSet(cl, force.getNumPerParticleParameters(), numParticles, "customManyParticleParameters");
     vector<vector<float> > paramVector(numParticles);
     for (int i = 0; i < numParticles; i++) {
@@ -5658,7 +5658,7 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
             tableArgs << width;
         tableArgs << "* restrict " << arrayName;
     }
-    
+
     // Record information about parameters.
 
     globalParamNames.resize(force.getNumGlobalParameters());
@@ -5690,9 +5690,9 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
             variables.push_back(makeVariable(name, value));
         }
     }
-    
+
     // Build data structures for type filters.
-    
+
     vector<int> particleTypesVec;
     vector<int> orderIndexVec;
     vector<std::vector<int> > particleOrderVec;
@@ -5711,9 +5711,9 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
                 flattenedOrder[i*particlesPerSet+j] = particleOrderVec[i][j];
         particleOrder->upload(flattenedOrder);
     }
-    
+
     // Build data structures for exclusions.
-    
+
     if (force.getNumExclusions() > 0) {
         vector<vector<int> > particleExclusions(numParticles);
         for (int i = 0; i < force.getNumExclusions(); i++) {
@@ -5735,9 +5735,9 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
         exclusions->upload(exclusionsVec);
         exclusionStartIndex->upload(exclusionStartIndexVec);
     }
-    
+
     // Build data structures for the neighbor list.
-    
+
     if (nonbondedMethod != NoCutoff) {
         int numAtomBlocks = cl.getNumAtomBlocks();
         int elementSize = (cl.getUseDoublePrecision() ? sizeof(double) : sizeof(float));
@@ -5910,14 +5910,14 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
         compute<<forceNames[atoms[3]]<<".xyz += internalF3.xyz;\n";
         compute<<"}\n";
     }
-    
+
     // Store forces to global memory.
-    
+
     for (int i = 0; i < particlesPerSet; i++)
         compute<<"storeForce(atom"<<(i+1)<<", "<<forceNames[i]<<", forceBuffers);\n";
-    
+
     // Create other replacements that depend on the number of particles per set.
-    
+
     stringstream numCombinations, atomsForCombination, isValidCombination, permute, loadData, verifyCutoff, verifyExclusions;
     if (hasTypeFilters) {
         permute<<"int particleSet[] = {";
@@ -6002,9 +6002,9 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
     string computeTypeIndex = "particleTypes[p"+cl.intToString(particlesPerSet)+"]";
     for (int i = particlesPerSet-2; i >= 0; i--)
         computeTypeIndex = "particleTypes[p"+cl.intToString(i+1)+"]+"+cl.intToString(numTypes)+"*("+computeTypeIndex+")";
-    
+
     // Create replacements for extra arguments.
-    
+
     stringstream extraArgs;
     if (force.getNumGlobalParameters() > 0)
         extraArgs << ", __global const float* globals";
@@ -6055,9 +6055,9 @@ void OpenCLCalcCustomManyParticleForceKernel::initialize(const System& system, c
 double OpenCLCalcCustomManyParticleForceKernel::execute(ContextImpl& context, bool includeForces, bool includeEnergy) {
     if (!hasInitializedKernel) {
         hasInitializedKernel = true;
-        
+
         // Set arguments for the force kernel.
-        
+
         int index = 0;
         forceKernel.setArg<cl::Buffer>(index++, cl.getLongForceBuffer().getDeviceBuffer());
         forceKernel.setArg<cl::Buffer>(index++, cl.getEnergyBuffer().getDeviceBuffer());
@@ -6085,7 +6085,7 @@ double OpenCLCalcCustomManyParticleForceKernel::execute(ContextImpl& context, bo
         }
         for (int i = 0; i < (int) tabulatedFunctions.size(); i++)
             forceKernel.setArg<cl::Buffer>(index++, tabulatedFunctions[i]->getDeviceBuffer());
-        
+
         if (nonbondedMethod != NoCutoff) {
             // Set arguments for the block bounds kernel.
 
@@ -6113,16 +6113,16 @@ double OpenCLCalcCustomManyParticleForceKernel::execute(ContextImpl& context, bo
                 neighborsKernel.setArg<cl::Buffer>(index++, exclusions->getDeviceBuffer());
                 neighborsKernel.setArg<cl::Buffer>(index++, exclusionStartIndex->getDeviceBuffer());
             }
-            
+
             // Set arguments for the kernel to find neighbor list start indices.
-            
+
             index = 0;
             startIndicesKernel.setArg<cl::Buffer>(index++, numNeighborsForAtom->getDeviceBuffer());
             startIndicesKernel.setArg<cl::Buffer>(index++, neighborStartIndex->getDeviceBuffer());
             startIndicesKernel.setArg<cl::Buffer>(index++, numNeighborPairs->getDeviceBuffer());
 
             // Set arguments for the kernel to assemble the final neighbor list.
-            
+
             index = 0;
             copyPairsKernel.setArg<cl::Buffer>(index++, neighborPairs->getDeviceBuffer());
             copyPairsKernel.setArg<cl::Buffer>(index++, neighbors->getDeviceBuffer());
@@ -6193,9 +6193,9 @@ void OpenCLCalcCustomManyParticleForceKernel::copyParametersToContext(ContextImp
     int numParticles = force.getNumParticles();
     if (numParticles != cl.getNumAtoms())
         throw OpenMMException("updateParametersInContext: The number of particles has changed");
-    
+
     // Record the per-particle parameters.
-    
+
     vector<vector<float> > paramVector(numParticles);
     vector<double> parameters;
     int type;
@@ -6206,9 +6206,9 @@ void OpenCLCalcCustomManyParticleForceKernel::copyParametersToContext(ContextImp
             paramVector[i][j] = (float) parameters[j];
     }
     params->setParameterValues(paramVector);
-    
+
     // Mark that the current reordering may be invalid.
-    
+
     cl.invalidateMolecules();
 }
 
@@ -6350,7 +6350,7 @@ void OpenCLCalcGayBerneForceKernel::initialize(const System& system, const GayBe
     epsParams->upload(epsParamsVector);
     scale->upload(scaleVector);
     axisParticleIndices->upload(axisParticleVector);
-    
+
     // Record exceptions and exclusions.
 
     vector<mm_float2> exceptionParamsVec;
@@ -6378,7 +6378,7 @@ void OpenCLCalcGayBerneForceKernel::initialize(const System& system, const GayBe
     exceptionParams = OpenCLArray::create<mm_float2>(cl, max(1, numExceptions), "exceptionParams");
     if (numExceptions > 0)
         exceptionParams->upload(exceptionParamsVec);
-    
+
     // Create data structures used for the neighbor list.
 
     int numAtomBlocks = (numRealParticles+31)/32;
@@ -6392,12 +6392,12 @@ void OpenCLCalcGayBerneForceKernel::initialize(const System& system, const GayBe
     neighborBlockCount = OpenCLArray::create<cl_int>(cl, 1, "neighborBlockCount");
 
     // Create array for accumulating torques.
-    
+
     torque = OpenCLArray::create<cl_long>(cl, 3*cl.getPaddedNumAtoms(), "torque");
     cl.addAutoclearBuffer(*torque);
 
     // Create the kernels.
-    
+
     nonbondedMethod = force.getNonbondedMethod();
     bool useCutoff = (nonbondedMethod != GayBerneForce::NoCutoff);
     bool usePeriodic = (nonbondedMethod == GayBerneForce::CutoffPeriodic);
@@ -6409,9 +6409,9 @@ void OpenCLCalcGayBerneForceKernel::initialize(const System& system, const GayBe
         defines["USE_CUTOFF"] = 1;
         if (usePeriodic)
             defines["USE_PERIODIC"] = "1";
-        
+
         // Compute the switching coefficients.
-        
+
         if (force.getUseSwitchingFunction()) {
             defines["SWITCH_CUTOFF"] = cl.doubleToString(force.getSwitchingDistance());
             defines["SWITCH_C3"] = cl.doubleToString(10/pow(force.getSwitchingDistance()-cutoff, 3.0));
@@ -6509,7 +6509,7 @@ double OpenCLCalcGayBerneForceKernel::execute(ContextImpl& context, bool include
             event.wait();
             if (*count <= maxNeighborBlocks)
                 break;
-            
+
             // There wasn't enough room for the neighbor list, so we need to recreate it.
 
             delete neighbors;
@@ -6531,7 +6531,7 @@ double OpenCLCalcGayBerneForceKernel::execute(ContextImpl& context, bool include
 
 void OpenCLCalcGayBerneForceKernel::copyParametersToContext(ContextImpl& context, const GayBerneForce& force) {
     // Make sure the new parameters are acceptable.
-    
+
     if (force.getNumParticles() != cl.getNumAtoms())
         throw OpenMMException("updateParametersInContext: The number of particles has changed");
     vector<int> exceptions;
@@ -6545,9 +6545,9 @@ void OpenCLCalcGayBerneForceKernel::copyParametersToContext(ContextImpl& context
             throw OpenMMException("updateParametersInContext: The set of non-excluded exceptions has changed");
     }
     int numExceptions = exceptionAtoms.size();
-    
+
     // Record the per-particle parameters.
-    
+
     vector<mm_float4> sigParamsVector(cl.getPaddedNumAtoms(), mm_float4(0, 0, 0, 0));
     vector<mm_float2> epsParamsVector(cl.getPaddedNumAtoms(), mm_float2(0, 0));
     vector<mm_float4> scaleVector(cl.getPaddedNumAtoms(), mm_float4(0, 0, 0, 0));
@@ -6564,9 +6564,9 @@ void OpenCLCalcGayBerneForceKernel::copyParametersToContext(ContextImpl& context
     sigParams->upload(sigParamsVector);
     epsParams->upload(epsParamsVector);
     scale->upload(scaleVector);
-    
+
     // Record the exceptions.
-    
+
     if (numExceptions > 0) {
         vector<mm_float2> exceptionParamsVec(numExceptions);
         for (int i = 0; i < numExceptions; i++) {
@@ -6584,7 +6584,7 @@ void OpenCLCalcGayBerneForceKernel::copyParametersToContext(ContextImpl& context
 void OpenCLCalcGayBerneForceKernel::sortAtoms() {
     // Sort the list of atoms by type to avoid thread divergence.  This is executed every time
     // the atoms are reordered.
-    
+
     int nextIndex = 0;
     vector<cl_int> particles(cl.getPaddedNumAtoms(), 0);
     const vector<int>& order = cl.getAtomIndex();
@@ -6597,9 +6597,9 @@ void OpenCLCalcGayBerneForceKernel::sortAtoms() {
         }
     }
     sortedParticles->upload(particles);
-    
+
     // Update the list of exception particles.
-    
+
     int numExceptions = exceptionAtoms.size();
     if (numExceptions > 0) {
         vector<mm_int4> exceptionParticlesVec(numExceptions);
@@ -6607,9 +6607,9 @@ void OpenCLCalcGayBerneForceKernel::sortAtoms() {
             exceptionParticlesVec[i] = mm_int4(exceptionAtoms[i].first, exceptionAtoms[i].second, inverseOrder[exceptionAtoms[i].first], inverseOrder[exceptionAtoms[i].second]);
         exceptionParticles->upload(exceptionParticlesVec);
     }
-    
+
     // Rebuild the list of exclusions.
-    
+
     vector<vector<int> > excludedAtoms(numRealParticles);
     for (int i = 0; i < excludedPairs.size(); i++) {
         int first = inverseOrder[min(excludedPairs[i].first, excludedPairs[i].second)];
@@ -6679,9 +6679,9 @@ void OpenCLIntegrateVerletStepKernel::execute(ContextImpl& context, const Verlet
     cl.setTime(cl.getTime()+dt);
     cl.setStepCount(cl.getStepCount()+1);
     cl.reorderAtoms();
-    
+
     // Reduce UI lag.
-    
+
 #ifdef WIN32
     cl.getQueue().flush();
 #endif
@@ -6776,9 +6776,9 @@ void OpenCLIntegrateLangevinStepKernel::execute(ContextImpl& context, const Lang
     cl.setTime(cl.getTime()+stepSize);
     cl.setStepCount(cl.getStepCount()+1);
     cl.reorderAtoms();
-    
+
     // Reduce UI lag.
-    
+
 #ifdef WIN32
     cl.getQueue().flush();
 #endif
@@ -6855,9 +6855,9 @@ void OpenCLIntegrateBrownianStepKernel::execute(ContextImpl& context, const Brow
     cl.setTime(cl.getTime()+stepSize);
     cl.setStepCount(cl.getStepCount()+1);
     cl.reorderAtoms();
-    
+
     // Reduce UI lag.
-    
+
 #ifdef WIN32
     cl.getQueue().flush();
 #endif
@@ -6932,9 +6932,9 @@ double OpenCLIntegrateVariableVerletStepKernel::execute(ContextImpl& context, co
 
     cl.executeKernel(kernel2, numAtoms);
     integration.computeVirtualSites();
-    
+
     // Reduce UI lag.
-    
+
 #ifdef WIN32
     cl.getQueue().flush();
 #endif
@@ -7039,9 +7039,9 @@ double OpenCLIntegrateVariableLangevinStepKernel::execute(ContextImpl& context, 
 
     cl.executeKernel(kernel2, numAtoms);
     integration.computeVirtualSites();
-    
+
     // Reduce UI lag.
-    
+
 #ifdef WIN32
     cl.getQueue().flush();
 #endif
@@ -7231,9 +7231,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
     bool useDouble = cl.getUseDoublePrecision() || cl.getUseMixedPrecision();
     if (!hasInitializedKernels) {
         hasInitializedKernels = true;
-        
+
         // Initialize various data structures.
-        
+
         const map<string, double>& params = context.getParameters();
         for (map<string, double>::const_iterator iter = params.begin(); iter != params.end(); ++iter)
             parameterNames.push_back(iter->first);
@@ -7249,7 +7249,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
         map<string, string> defines;
         defines["NUM_ATOMS"] = cl.intToString(cl.getNumAtoms());
         defines["WORK_GROUP_SIZE"] = cl.intToString(OpenCLContext::ThreadBlockSize);
-        
+
         // Record information about all the computation steps.
 
         vector<string> variable(numSteps);
@@ -7269,9 +7269,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
             for (int i = 0; i < (int) globalExpressions[step].size(); i++)
                 expressionSet.registerExpression(globalExpressions[step][i]);
         }
-        
+
         // Record the indices for variables in the CompiledExpressionSet.
-        
+
         gaussianVariableIndex = expressionSet.getVariableIndex("gaussian");
         uniformVariableIndex = expressionSet.getVariableIndex("uniform");
         dtVariableIndex = expressionSet.getVariableIndex("dt");
@@ -7310,9 +7310,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
             if (forceGroupFlags[step] != -2 && savedForces.find(forceGroupFlags[step]) == savedForces.end())
                 savedForces[forceGroupFlags[step]] = new OpenCLArray(cl, cl.getForce().getSize(), cl.getForce().getElementSize(), "savedForces");
         }
-        
+
         // Allocate space for storing global values, both on the host and the device.
-        
+
         globalValuesFloat.resize(expressionSet.getNumVariables());
         globalValuesDouble.resize(expressionSet.getNumVariables());
         int elementSize = (cl.getUseDoublePrecision() || cl.getUseMixedPrecision() ? sizeof(double) : sizeof(float));
@@ -7330,9 +7330,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
         localPerDofEnergyParamDerivsFloat.resize(numContextParams);
         localPerDofEnergyParamDerivsDouble.resize(numContextParams);
         perDofEnergyParamDerivs = new OpenCLArray(cl, max(1, numContextParams), elementSize, "perDofEnergyParamDerivs");
-        
+
         // Record information about the targets of steps that will be stored in global variables.
-        
+
         for (int step = 0; step < numSteps; step++) {
             if (stepType[step] == CustomIntegrator::ComputeGlobal || stepType[step] == CustomIntegrator::ComputeSum) {
                 if (variable[step] == "dt")
@@ -7361,9 +7361,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                         needsGlobals[step] = true;
             }
         }
-        
+
         // Determine how each step will represent the position (as just a value, or a value plus a delta).
-        
+
         hasAnyConstraints = (context.getSystem().getNumConstraints() > 0);
         vector<bool> storePosAsDelta(numSteps, false);
         vector<bool> loadPosAsDelta(numSteps, false);
@@ -7384,9 +7384,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                     storedAsDelta = false;
             }
         }
-        
+
         // Identify steps that can be merged into a single kernel.
-        
+
         for (int step = 1; step < numSteps; step++) {
             if ((needsForces[step] || needsEnergy[step]) && (invalidatesForces[step-1] || forceGroupFlags[step] != forceGroupFlags[step-1]))
                 continue;
@@ -7399,13 +7399,13 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                 needsEnergy[step-1] = (needsEnergy[step] || needsEnergy[step-1]);
                 needsGlobals[step-1] = (needsGlobals[step] || needsGlobals[step-1]);
             }
-        
+
         // Loop over all steps and create the kernels for them.
-        
+
         for (int step = 0; step < numSteps; step++) {
             if ((stepType[step] == CustomIntegrator::ComputePerDof || stepType[step] == CustomIntegrator::ComputeSum) && !merged[step]) {
                 // Compute a per-DOF value.
-                
+
                 stringstream compute;
                 for (int i = 0; i < (int) perDofValues->getBuffers().size(); i++) {
                     const OpenCLNonbondedUtilities::ParameterInfo& buffer = perDofValues->getBuffers()[i];
@@ -7464,6 +7464,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                 else if (defines.find("LOAD_POS_AS_DELTA") != defines.end())
                     defines.erase("LOAD_POS_AS_DELTA");
                 cl::Program program = cl.createProgram(cl.replaceStrings(OpenCLKernelSources::customIntegratorPerDof, replacements), defines);
+                cout << endl << program.getInfoString(CL_PROGRAM_SOURCE) << endl; // DEBUG JDC
                 cl::Kernel kernel = cl::Kernel(program, "computePerDof");
                 kernels[step].push_back(kernel);
                 requiredGaussian[step] = numGaussian;
@@ -7505,9 +7506,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                 kernel.setArg<cl::Buffer>(index++, integration.getPosDelta().getDeviceBuffer());
             }
         }
-        
+
         // Initialize the random number generator.
-        
+
         int maxUniformRandoms = 1;
         for (int i = 0; i < (int) requiredUniform.size(); i++)
             maxUniformRandoms = max(maxUniformRandoms, requiredUniform[i]);
@@ -7531,7 +7532,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
         randomKernel.setArg<cl_int>(0, maxUniformRandoms);
         randomKernel.setArg<cl::Buffer>(1, uniformRandoms->getDeviceBuffer());
         randomKernel.setArg<cl::Buffer>(2, randomSeed->getDeviceBuffer());
-        
+
         // Create the kernel for computing kinetic energy.
 
         stringstream computeKE;
@@ -7586,9 +7587,9 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
         sumKineticEnergyKernel.setArg<cl::Buffer>(index++, summedValue->getDeviceBuffer());
         sumKineticEnergyKernel.setArg<cl_int>(index++, 3*numAtoms);
     }
-    
+
     // Make sure all values (variables, parameters, etc.) are up to date.
-    
+
     if (!deviceValuesAreCurrent) {
         if (useDouble)
             perDofValues->setParameterValues(localPerDofValuesDouble);
@@ -7611,7 +7612,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
 ExpressionTreeNode OpenCLIntegrateCustomStepKernel::replaceDerivFunctions(const ExpressionTreeNode& node, ContextImpl& context) {
     // This is called recursively to identify calls to the deriv() function inside global expressions,
     // and replace them with a custom function that returns the correct value.
-    
+
     const Operation& op = node.getOperation();
     if (op.getId() == Operation::CUSTOM && op.getName() == "deriv") {
         string param = node.getChildren()[1].getOperation().getName();
@@ -7631,7 +7632,7 @@ ExpressionTreeNode OpenCLIntegrateCustomStepKernel::replaceDerivFunctions(const 
 void OpenCLIntegrateCustomStepKernel::findExpressionsForDerivs(const ExpressionTreeNode& node, vector<pair<ExpressionTreeNode, string> >& variableNodes) {
     // This is called recursively to identify calls to the deriv() function inside per-DOF expressions,
     // and record the code to replace them with.
-    
+
     const Operation& op = node.getOperation();
     if (op.getId() == Operation::CUSTOM && op.getName() == "deriv") {
         string param = node.getChildren()[1].getOperation().getName();
@@ -7654,7 +7655,7 @@ void OpenCLIntegrateCustomStepKernel::execute(ContextImpl& context, CustomIntegr
     OpenCLIntegrationUtilities& integration = cl.getIntegrationUtilities();
     int numAtoms = cl.getNumAtoms();
     int numSteps = integrator.getNumComputations();
-    
+
     // Loop over computation steps in the integrator and execute them.
 
     for (int step = 0; step < numSteps; ) {
@@ -7664,21 +7665,21 @@ void OpenCLIntegrateCustomStepKernel::execute(ContextImpl& context, CustomIntegr
             if (forcesAreValid && savedForces.find(lastForceGroups) != savedForces.end()) {
                 // The forces are still valid.  We just need a different force group right now.  Save the old
                 // forces in case we need them again.
-                
+
                 cl.getForce().copyTo(*savedForces[lastForceGroups]);
                 validSavedForces.insert(lastForceGroups);
             }
             else
                 validSavedForces.clear();
-            
+
             // Recompute forces and/or energy.  Figure out what is actually needed
             // between now and the next time they get invalidated again.
-            
+
             bool computeForce = (needsForces[step] || computeBothForceAndEnergy[step]);
             bool computeEnergy = (needsEnergy[step] || computeBothForceAndEnergy[step]);
             if (!computeEnergy && validSavedForces.find(forceGroupFlags[step]) != validSavedForces.end()) {
                 // We can just restore the forces we saved earlier.
-                
+
                 savedForces[forceGroupFlags[step]]->copyTo(cl.getForce());
             }
             else {
@@ -7704,7 +7705,7 @@ void OpenCLIntegrateCustomStepKernel::execute(ContextImpl& context, CustomIntegr
         }
         if (needsGlobals[step] && !deviceGlobalsAreCurrent) {
             // Upload the global values to the device.
-            
+
             if (cl.getUseDoublePrecision() || cl.getUseMixedPrecision())
                 globalValues->upload(globalValuesDouble);
             else {
@@ -7796,9 +7797,9 @@ void OpenCLIntegrateCustomStepKernel::execute(ContextImpl& context, CustomIntegr
         forcesAreValid = false;
         validSavedForces.clear();
     }
-    
+
     // Reduce UI lag.
-    
+
 #ifdef WIN32
     cl.getQueue().flush();
 #endif
@@ -7832,7 +7833,7 @@ double OpenCLIntegrateCustomStepKernel::computeKineticEnergy(ContextImpl& contex
     if (keNeedsForce && !forcesAreValid) {
         // Compute the force.  We want to then mark that forces are valid, which means also computing
         // potential energy if any steps will expect it to be valid too.
-        
+
         bool willNeedEnergy = false;
         for (int i = 0; i < integrator.getNumComputations(); i++)
             willNeedEnergy |= needsEnergy[i];
@@ -7888,7 +7889,7 @@ void OpenCLIntegrateCustomStepKernel::recordChangedParameters(ContextImpl& conte
 void OpenCLIntegrateCustomStepKernel::getGlobalVariables(ContextImpl& context, vector<double>& values) const {
     if (globalValues == NULL) {
         // The data structures haven't been created yet, so just return the list of values that was given earlier.
-        
+
         values = initialGlobalVariables;
     }
     values.resize(numGlobalVariables);
@@ -7901,7 +7902,7 @@ void OpenCLIntegrateCustomStepKernel::setGlobalVariables(ContextImpl& context, c
         return;
     if (globalValues == NULL) {
         // The data structures haven't been created yet, so just store the list of values.
-        
+
         initialGlobalVariables = values;
         return;
     }
@@ -8035,7 +8036,7 @@ void OpenCLApplyMonteCarloBarostatKernel::scaleCoordinates(ContextImpl& context,
         moleculeStartIndex->upload(startIndex);
 
         // Initialize the kernel arguments.
-        
+
         kernel.setArg<cl_int>(3, numMolecules);
         kernel.setArg<cl::Buffer>(9, cl.getPosq().getDeviceBuffer());
         kernel.setArg<cl::Buffer>(10, moleculeAtoms->getDeviceBuffer());
