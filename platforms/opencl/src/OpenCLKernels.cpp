@@ -7466,7 +7466,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                 cl::Program program = cl.createProgram(cl.replaceStrings(OpenCLKernelSources::customIntegratorPerDof, replacements), defines);
                 // DEBUG: read kernel source back in from program to check
                 {
-                    int kernelSourceSize;
+                    size_t kernelSourceSize;
                     char *kernelSource;
                     clGetProgramInfo(program, CL_PROGRAM_SOURCE, 0, NULL, &kernelSourceSize);
                     kernelSource = (char*) malloc(kernelSourceSize);
@@ -7509,7 +7509,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                 cl::Program program = cl.createProgram(OpenCLKernelSources::customIntegrator, defines);
                 // DEBUG: read kernel source back in from program to check
                 {
-                    int kernelSourceSize;
+                    size_t kernelSourceSize;
                     char *kernelSource;
                     clGetProgramInfo(program, CL_PROGRAM_SOURCE, 0, NULL, &kernelSourceSize);
                     kernelSource = (char*) malloc(kernelSourceSize);
@@ -7579,7 +7579,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
 
         // DEBUG: read kernel source back in from program to check
         {
-            int kernelSourceSize;
+            size_t kernelSourceSize;
             char *kernelSource;
             clGetProgramInfo(program, CL_PROGRAM_SOURCE, 0, NULL, &kernelSourceSize);
             kernelSource = (char*) malloc(kernelSourceSize);
