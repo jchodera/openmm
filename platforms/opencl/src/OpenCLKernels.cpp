@@ -7465,7 +7465,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
                     defines.erase("LOAD_POS_AS_DELTA");
                 cl::Program program = cl.createProgram(cl.replaceStrings(OpenCLKernelSources::customIntegratorPerDof, replacements), defines);
                 // DEBUG: read kernel source back in from program to check
-                cout << "customIntegratorPerDof:" << endl << program.getInfo<std::string>(CL_PROGRAM_SOURCE) << endl;
+                cout << "customIntegratorPerDof:" << endl << program.getInfo<CL_PROGRAM_SOURCE>() << endl;
 
                 cl::Kernel kernel = cl::Kernel(program, "computePerDof");
                 kernels[step].push_back(kernel);
@@ -7501,7 +7501,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
 
                 cl::Program program = cl.createProgram(OpenCLKernelSources::customIntegrator, defines);
                 // DEBUG: read kernel source back in from program to check
-                cout << "applyPositionDeltas:" << endl << program.getInfo<std::string>(CL_PROGRAM_SOURCE) << endl;
+                cout << "applyPositionDeltas:" << endl << program.getInfo<CL_PROGRAM_SOURCE>() << endl;
 
                 cl::Kernel kernel = cl::Kernel(program, "applyPositionDeltas");
                 kernels[step].push_back(kernel);
@@ -7564,7 +7564,7 @@ void OpenCLIntegrateCustomStepKernel::prepareForComputation(ContextImpl& context
         cl::Program program = cl.createProgram(cl.replaceStrings(OpenCLKernelSources::customIntegratorPerDof, replacements), defines);
 
         // DEBUG: read kernel source back in from program to check
-        cout << "customIntegratorPerDof:" << endl << program.getInfo<std::string>(CL_PROGRAM_SOURCE) << endl;
+        cout << "customIntegratorPerDof:" << endl << program.getInfo<CL_PROGRAM_SOURCE>() << endl;
 
         kineticEnergyKernel = cl::Kernel(program, "computePerDof");
         int index = 0;
